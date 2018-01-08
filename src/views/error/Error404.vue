@@ -1,13 +1,9 @@
 <template>
-    <div class="page-404">
-        <ui-header></ui-header>
-        <main class="page-body">
-            <div class="container">
-                404
-            </div>
-        </main>
-        <ui-footer></ui-footer>
-    </div>
+    <ui-page title="页面找不到了">
+        <div class="container">
+            <div class="error-404">404</div>
+        </div>
+    </ui-page>
 </template>
 
 <script>
@@ -20,4 +16,8 @@
 </script>
 
 <style scoped>
+    .error-404 {
+        padding: 80px 0;
+        text-align: center;
+    }
 </style>

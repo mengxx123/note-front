@@ -1,51 +1,41 @@
 <template>
-    <div class="page-about">
-        <ui-header></ui-header>
-        <main class="page-body">
-            <div class="container">
-                <div>这是关于页面</div>
-                <div>版本：{{ version }}</div>
-            </div>
-        </main>
-        <ui-footer></ui-footer>
-    </div>
+    <ui-page name="about" title="关于">
+        <div class="about-box">
+            <img class="logo" src="/static/img/logo.svg">
+            <div class="version">便签 v1.0.0</div>
+            <div class="copyright">© 2018 <a href="https://yunser.com">云设</a></div>
+        </div>
+    </ui-page>
 </template>
 
 <script>
     export default {
         data () {
             return {
-                version: ''
             }
-        },
-        mounted() {
-            this.$http.get('/version').then(
-                response => {
-                    let data = response.data
-                    if (data.code === 200) {
-                        console.log(data)
-                        this.version = data.data
-                    }
-                },
-                response => {
-                    console.log(response)
-                })
-//            this.$http.post('/example', this.$qs.stringify({
-//                param1: 'value1',
-//                param2: 'value2'
-//            })).then(
-//                response => {
-//                    let data = response.data
-//                    if (data.code === 200) {
-//                        console.log(data.data)
-//                    }
-//                },
-//                response => {
-//                    console.log(response)
-//                })
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .about-box {
+        text-align: center;
+    }
+    .logo {
+        display: block;
+        width: 80px;
+        margin: 80px auto 16px auto;
+    }
+    .version {
+        color: #999;
+    }
+    .copyright {
+        position: absolute;
+        bottom: 16px;
+        width: 100%;
+        text-align: center;
+        a {
+            color: inherit;
+        }
+    }
 </style>

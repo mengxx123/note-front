@@ -1,50 +1,69 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Home = resolve => require(['@/views/Home'], resolve)
 const About = resolve => require(['@/views/About'], resolve)
+const Home = resolve => require(['@/views/Home'], resolve)
+const CategoryDetail = resolve => require(['@/views/CategoryDetail'], resolve)
+const Help = resolve => require(['@/views/Help'], resolve)
+const Settings = resolve => require(['@/views/Settings'], resolve)
 
+const OauthCallback = resolve => require(['@/views/oauth/Callback'], resolve)
 const Error404 = resolve => require(['@/views/error/Error404'], resolve)
 
-Vue.use(Router)
+const ArticleDetail = resolve => require(['@/views/article/Detail'], resolve)
+const Article = resolve => require(['@/views/article/Article'], resolve)
+const MyArticle = resolve => require(['@/views/article/MyArticle'], resolve)
+const ArticleAdd = resolve => require(['@/views/article/ArticleAdd'], resolve)
 
-const APP_NAME = '云设'
+Vue.use(Router)
 
 let routes = [
     {
         path: '/',
-        component: Home,
-        meta: {
-            title: '首页'
-        }
+        component: Home
+    },
+    // 文章相关
+    {
+        path: '/articles',
+        component: Article
+    },
+    {
+        path: '/articles/add',
+        component: ArticleAdd
+    },
+    {
+        path: '/articles/:id',
+        component: ArticleDetail
+    },
+    {
+        path: '/me/articles',
+        component: MyArticle
+    },
+    {
+        path: '/categories/:id',
+        component: CategoryDetail
+    },
+    {
+        path: '/settings',
+        component: Settings
+    },
+    {
+        path: '/oauth/callback',
+        component: OauthCallback
     },
     {
         path: '/about',
-        component: About,
-        meta: {
-            title: '关于'
-        }
+        component: About
     },
     {
-        path: '/404',
-        component: Error404,
-        meta: {
-            title: '页面找不到了'
-        }
+        path: '/help',
+        component: Help
     },
     {
         path: '*',
-        redirect: '/404'
+        component: Error404
     }
 ]
-
-function getTitle(title) {
-    if (title) {
-        return title
-    } else {
-        return APP_NAME
-    }
-}
 
 let router = new Router({
     mode: 'history',
@@ -58,11 +77,6 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.meta && to.meta.title) {
-        document.title = getTitle(to.meta.title)
-    } else {
-        document.title = getTitle()
-    }
     next()
 })
 
