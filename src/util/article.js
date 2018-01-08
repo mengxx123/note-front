@@ -14,6 +14,17 @@ let article = {
         articles.unshift(article)
         storage.set('articles', articles)
     },
+    update(id, article) {
+        let articles = this.getAll()
+        for (let i = 0; i < articles.length; i++) {
+            if (articles[i].id === id) {
+                articles[i].title = article.title
+                articles[i].content = article.content
+                break
+            }
+        }
+        storage.set('articles', articles)
+    },
     getById(id) {
         let articles = this.getAll()
         for (let i = 0; i < articles.length; i++) {

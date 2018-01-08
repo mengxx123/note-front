@@ -2,8 +2,12 @@
     <ui-page title="文章详情" :page="page" backable>
         <ui-content-block>
             <div v-if="article">
-                <div>{{ article.title }}</div>
-                <div v-html="article.content"></div>
+                <div>
+                    <ui-text-field v-model="article.title" hintText="标题（可为空）"/>
+                </div>
+                <div>
+                    <ui-text-field v-model="article.content" hintText="内容" multiLine :rows="10" :rowsMax="6"/>
+                </div>
             </div>
         </ui-content-block>
         <ui-list v-if="false">
@@ -39,6 +43,11 @@
                             type: 'icon',
                             icon: 'delete',
                             click: this.remove
+                        },
+                        {
+                            type: 'icon',
+                            icon: 'check',
+                            click: this.update
                         }
                     ]
                 },
@@ -77,6 +86,34 @@
                       response => {
                           console.log(response)
                       })
+            },
+            update() {
+                let user = this.$storage.get('user')
+                if (!this.article.content) {
+                    alert('请输入内容')
+                }
+                let title = this.article.title
+                if (!title) {
+                    title = this.content.substring(0, 10)
+                }
+                if (user) {
+                    this.$http.put(`/articles/${this.article.id}`, {
+                        title: title,
+                        content: this.article.content
+                    })
+                        .then(response => {
+                                this.$router.go(-1)
+                            },
+                            response => {
+                                console.log(response)
+                            })
+                } else {
+                    localActicle.update(this.article.id, {
+                        title: title,
+                        content: this.article.content
+                    })
+                    this.$router.go(-1)
+                }
             },
             remove() {
                 let id = this.$route.params.id

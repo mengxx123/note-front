@@ -11,8 +11,6 @@ const OauthCallback = resolve => require(['@/views/oauth/Callback'], resolve)
 const Error404 = resolve => require(['@/views/error/Error404'], resolve)
 
 const ArticleDetail = resolve => require(['@/views/article/Detail'], resolve)
-const Article = resolve => require(['@/views/article/Article'], resolve)
-const MyArticle = resolve => require(['@/views/article/MyArticle'], resolve)
 const ArticleAdd = resolve => require(['@/views/article/ArticleAdd'], resolve)
 
 Vue.use(Router)
@@ -24,20 +22,12 @@ let routes = [
     },
     // 文章相关
     {
-        path: '/articles',
-        component: Article
-    },
-    {
         path: '/articles/add',
         component: ArticleAdd
     },
     {
         path: '/articles/:id',
         component: ArticleDetail
-    },
-    {
-        path: '/me/articles',
-        component: MyArticle
     },
     {
         path: '/categories/:id',

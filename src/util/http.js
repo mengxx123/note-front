@@ -17,10 +17,6 @@ instance.interceptors.request.use(
                 config.headers.Authorization = token
             }
             return config
-            // if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-            //     config.headers.Authorization = `token ${store.state.token}`;
-            // }
-            return config
         },
         err => {
             console.log('错误')
@@ -38,13 +34,11 @@ instance.interceptors.response.use(
             if (error.response) {
                 switch (error.response.status) {
                     case 401: // 旌旗  灵医 , 只用[授权] 旌旗的医生 才是 灵医
-
-                        // 返回 401 清除token信息并跳转到登录页面
-                        store.commit(types.LOGOUT)
-                        router.replace({
-                            path: 'login',
-                            query: {redirect: router.currentRoute.fullPath}
-                        })
+                        // store.commit(types.LOGOUT)
+                        // router.replace({
+                        //     path: 'login',
+                        //     query: {redirect: router.currentRoute.fullPath}
+                        // })
                 }
             }
             return Promise.reject(error.response.data)   // 返回接口返回的错误信息
