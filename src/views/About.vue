@@ -2,7 +2,7 @@
     <ui-page name="about" title="关于">
         <div class="about-box">
             <img class="logo" src="/static/img/logo.svg">
-            <div class="version">便签 v1.0.0</div>
+            <div class="version">便签 v1.0.1</div>
             <div class="copyright">© 2018 <a href="https://yunser.com">云设</a></div>
         </div>
     </ui-page>
