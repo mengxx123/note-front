@@ -1,9 +1,9 @@
 <template>
-    <ui-page title="页面找不到了">
+    <my-page title="页面找不到了">
         <div class="container">
             <div class="error-404">404</div>
         </div>
-    </ui-page>
+    </my-page>
 </template>
 
 <script>

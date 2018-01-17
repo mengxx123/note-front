@@ -1,12 +1,10 @@
 <template>
     <div class="page-about">
-        <ui-header></ui-header>
         <main class="page-body">
             <div class="container">
                 <div>登陆回调</div>
             </div>
         </main>
-        <ui-footer></ui-footer>
     </div>
 </template>
 

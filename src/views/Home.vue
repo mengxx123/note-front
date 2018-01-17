@@ -1,29 +1,47 @@
 <template>
-    <ui-page name="todo" title="云设便签">
-        <ui-list v-if="articles.length">
-            <ui-list-item :title="article.title" :to="`/articles/${article.id}`" v-for="article in articles"
-                          :key="article.id">
-                <!--<ui-avatar src="/images/avatar1.jpg" slot="leftAvatar"/>-->
-                <span slot="describe" v-html="article.content"></span>
-                <!--<ui-icon-menu slot="right" icon="more_vert" tooltip="操作">-->
+    <my-page name="todo" :page="page" title="云设便签" :containerPadding="layout === 'grid'">
+        <ui-list v-if="articles.length && layout === 'list'">
+            <li v-for="article in articles"
+                :key="article.id">
+                <ui-list-item :title="article.title" :to="`/articles/${article.id}`">
+                    <ui-icon slot="left" value="grade"/>
+                    <span slot="describe" v-html="article.content"></span>
+                    <!--<ui-icon-menu slot="right" icon="more_vert" tooltip="操作">-->
                     <!--<ui-menu-item title="回复" />-->
                     <!--<ui-menu-item title="标记" />-->
                     <!--<ui-menu-item title="删除" />-->
-                <!--</ui-icon-menu>-->
-            </ui-list-item>
-            <ui-divider inset/>
+                    <!--</ui-icon-menu>-->
+                </ui-list-item>
+                <ui-divider inset/>
+            </li>
+
         </ui-list>
+
+        <div class="article-grid my-row" v-if="articles.length && layout === 'grid'" gutter>
+            <div class="my-col" v-for="article in articles" :key="article.id">
+                <div class="my-col-content">
+                    <ui-paper class="item" :title="article.title" :to="`/articles/${article.id}`">
+                        <router-link class="link ui-match-parent" :to="`/articles/${article.id}`">
+                            <h3 class="title">{{ article.title }}</h3>
+                            <div class="content">{{ article.content }}</div>
+                            <div class="time">{{ simpleTime(article.updateTime) }}</div>
+                        </router-link>
+                    </ui-paper>
+                </div>
+            </div>
+        </div>
         <div class="empty-box" v-if="!articles.length">
             <p>你还没有添加任何便签</p>
-            <p>点击右下角的 + 添加快速便签</p>
+            <p>点击右下角的 + 添加快速添加便签</p>
         </div>
         <ui-float-button class="ui-float-btn" icon="add" to="/articles/add"/>
-        <div class="tip">小提示：请不要清理浏览器缓存</div>
-    </ui-page>
+        <div class="tip" v-if="tipVisible">{{ tip }}</div>
+    </my-page>
 </template>
 
 <script>
     import localActicle from '@/util/article'
+    import {format} from '@/util/time'
 
     export default {
         data () {
@@ -31,7 +49,20 @@
                 articles: [],
                 input: '',
                 todos: [],
-                showTip: false
+                showTip: false,
+                layout: 'grid',
+                page: {
+                    menu: [
+                        {
+                            type: 'icon',
+                            icon: this.layout === 'grid' ? 'list' : 'apps',
+                            title: '切换布局',
+                            click: this.changeLayout
+                        }
+                    ]
+                },
+                tip: '小提示：请不要清理浏览器缓存',
+                tipVisible: true
             }
         },
         mounted() {
@@ -40,8 +71,21 @@
         methods: {
             // 初始化
             init() {
+                // 提示
+                this.tipVisible = this.$storage.get('tipVisible', true)
+                let now = new Date()
+                if (now.getHours() > 1 && now.getHours() < 6) {
+                    this.tip = '成功的人，懂得珍惜时间，也懂得休息'
+                }
+
+                this.layout = this.$storage.get('layout', 'grid')
                 if (this.$storage.get('accessToken')) {
                     let user = this.$storage.get('user')
+                    if (!user) {
+                        this.$storage.set('accessToken', null)
+                        this.$route.go(0)
+                        return
+                    }
                     this.$http.get(`/users/${user.id}/articles`)
                         .then(response => {
                             this.articles = response.data
@@ -51,7 +95,13 @@
                         })
                 } else {
                     this.articles = localActicle.getAll()
+                    this.articles = this.articles.sort((a, b) => {
+                        return b.updateTime - a.updateTime
+                    })
                 }
+            },
+            changeLayout() {
+                this.layout = this.layout === 'list' ? 'grid' : 'list'
             },
             add() {
                 if (!this.input) {
@@ -96,17 +146,31 @@
             },
             updateStorage() {
                 this.$storage.set('todos', this.todos)
+            },
+            simpleTime(time) {
+                let date = new Date(time)
+                let now = new Date()
+                if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() &&
+                    date.getDate() === now.getDate()) {
+                    return '今天 ' + format(date, 'hh:mm')
+                } else if (date.getFullYear() === now.getFullYear()) {
+                    return format(date, 'MM月dd日 hh:mm')
+                } else {
+                    return format(date, 'yyyy-MM-dd hh:mm')
+                }
+            }
+        },
+        watch: {
+            layout(value) {
+                this.$storage.set('layout', value)
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .ui-float-btn {
-        position: fixed;
-        bottom: 16px;
-        right: 16px;
-    }
+    @import "../scss/var";
+
     .empty-box {
         padding: 80px 0;
         text-align: center;
@@ -117,5 +181,57 @@
         bottom: 16px;
         left: 16px;
         color: #999;
+    }
+    .article-grid {
+        /*padding: 8px 0 0 16px;*/
+        .item {
+            width: 100%;
+            /*height: 200px;*/
+            /*margin: 8px 16px 8px 0;*/
+            /*float: left;*/
+            &:hover {
+                @include depth(2);
+            }
+        }
+        .link {
+            padding: 16px;
+        }
+        .title {
+            color: #333;
+            font-size: 18px;
+        }
+        .content {
+            margin-bottom: 16px;
+            color: #888;
+            max-height: 42px;
+            overflow: hidden;
+        }
+        .time {
+            color: #888;
+        }
+    }
+    .my-row {
+        column-count: 3;
+        column-gap: 0;
+        counter-reset: item-counter;
+        margin-left: -8px;
+        margin-right: -8px;
+        @include clearfix;
+    }
+    .my-col {
+        break-inside: avoid;
+        /*float: left;*/
+        width: 100%;
+        /*padding: 8px;*/
+    }
+    .my-col-content {
+        break-inside: avoid;
+        position: relative;
+        padding: 8px;
+    }
+    @media all and (max-width: 800px) {
+        .my-row {
+            column-count: 2;
+        }
     }
 </style>

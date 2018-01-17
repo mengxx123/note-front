@@ -1,11 +1,11 @@
 <template>
-    <ui-page name="about" title="关于">
+    <my-page title="关于" backable>
         <div class="about-box">
             <img class="logo" src="/static/img/logo.svg">
             <div class="version">便签 v1.0.1</div>
             <div class="copyright">© 2018 <a href="https://yunser.com">云设</a></div>
         </div>
-    </ui-page>
+    </my-page>
 </template>
 
 <script>
@@ -28,11 +28,9 @@
     }
     .version {
         color: #999;
+        margin-bottom: 16px;
     }
     .copyright {
-        position: absolute;
-        bottom: 16px;
-        width: 100%;
         text-align: center;
         a {
             color: inherit;

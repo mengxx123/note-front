@@ -1,40 +1,38 @@
 <template>
-    <ui-page name="todo" title="设置">
-        <!--<ui-list>-->
-            <!--<ui-list-item disabled title="通知与信息设置" describeText="总是中断"/>-->
-        <!--</ui-list>-->
-        <!--<ui-divider />-->
-        <!--<ui-list>-->
-            <!--<ui-sub-header>声音开启设置</ui-sub-header>-->
-            <!--<ui-list-item disableRipple @click="handleToggle('events')" title="事件和提醒">-->
-                <!--<ui-switch v-model="events"  slot="right"/>-->
-            <!--</ui-list-item>-->
-            <!--<ui-list-item disableRipple @click="handleToggle('calls')" title="电话">-->
-                <!--<ui-switch v-model="calls" slot="right"/>-->
-            <!--</ui-list-item>-->
-            <!--<ui-list-item disableRipple @click="handleToggle('messages')" title="信息">-->
-                <!--<ui-switch v-model="messages" slot="right"/>-->
-            <!--</ui-list-item>-->
-        <!--</ui-list>-->
-        <ui-list>
-            <ui-sub-header>关于</ui-sub-header>
-            <ui-list-item title="关于" to="/about">
-                <ui-icon value="next" slot="right" />
+    <my-page name="todo" title="设置" backable :containerMaxWidth="480">
+
+        <ui-sub-header class="sub-header">界面</ui-sub-header>
+        <ui-list class="list">
+            <ui-list-item disableRipple @click="handleToggle()" title="显示小提示">
+                <ui-switch v-model="tipVisible" slot="right"/>
             </ui-list-item>
         </ui-list>
-    </ui-page>
+
+        <ui-sub-header class="sub-header">关于</ui-sub-header>
+        <ui-list class="list">
+            <ui-list-item title="关于" to="/about" />
+            <ui-list-item title="开源" href="https://github.com/yunser/note-front" target="_blank" />
+        </ui-list>
+
+        <ui-sub-header class="sub-header">帮助与反馈</ui-sub-header>
+        <ui-list class="list">
+            <ui-list-item title="帮助" describeText="帮助与注意事项" to="/help" />
+            <ui-list-item title="Bug 反馈" href="https://github.com/yunser/note-front/issues" target="_blank" />
+        </ui-list>
+
+        <ui-sub-header class="sub-header">应用推荐</ui-sub-header>
+        <ui-list class="list">
+            <ui-list-item title="云设工具" href="http://tool.yunser.com/" target="_blank" />
+            <ui-list-item title="待办事项" href="http://todo.yunser.com/" target="_blank" />
+        </ui-list>
+    </my-page>
 </template>
 
 <script>
     export default {
         data () {
             return {
-                events: false,
-                calls: false,
-                messages: false,
-                notifications: false,
-                sounds: false,
-                videoSounds: false
+                tipVisible: true
             }
         },
         mounted() {
@@ -42,14 +40,27 @@
         },
         methods: {
             init() {
-
+                this.tipVisible = this.$storage.get('tipVisible', true)
             },
-            handleToggle(key) {
-                this[key] = !this[key]
+            handleToggle() {
+                this.tipVisible = !this.tipVisible
+                this.$storage.set('tipVisible', this.tipVisible)
             }
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    @import "../scss/var";
+
+    .sub-header {
+        padding-left: 0;
+    }
+    .list {
+        margin-bottom: 16px;
+        background-color: #fff;
+        @include depth()
+    }
+    @media all and (max-width: 800px) {
+    }
 </style>

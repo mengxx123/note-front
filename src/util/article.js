@@ -20,6 +20,7 @@ let article = {
             if (articles[i].id === id) {
                 articles[i].title = article.title
                 articles[i].content = article.content
+                articles[i].updateTime = new Date().getTime()
                 break
             }
         }
@@ -33,6 +34,16 @@ let article = {
             }
         }
         return null
+    },
+    remove(item) {
+        let list = this.getAll()
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id === item.id) {
+                list.splice(i, 1)
+                break
+            }
+        }
+        storage.set('articles', list)
     }
 }
 

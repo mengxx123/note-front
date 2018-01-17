@@ -1,18 +1,18 @@
 <template>
-    <ui-page title="文章详情" :page="page" backable>
+    <my-page title="文章详情" :page="page" backable>
         <ui-content-block>
             <div v-if="article">
                 <div>
-                    <ui-text-field v-model="article.title" hintText="标题（可为空）"/>
+                    <ui-text-field v-model="article.title" hintText="标题（可为空）" full-width/>
                 </div>
                 <div>
-                    <ui-text-field v-model="article.content" hintText="内容" multiLine :rows="10" :rowsMax="6"/>
+                    <ui-text-field v-model="article.content" hintText="内容" multiLine :rows="10" :rowsMax="6" full-width/>
                 </div>
             </div>
         </ui-content-block>
         <ui-list v-if="false">
             <ui-sub-header>评论</ui-sub-header>
-            <ui-list-item title="小明" v-for="comment in comments">
+            <ui-list-item title="小明" v-for="comment in comments" :key="comment.id">
                 <ui-avatar src="/images/avatar1.jpg" slot="leftAvatar"/>
                 <span slot="describe" v-html="comment.content"></span>
                 <div>{{ comment.updateTime }}</div>
@@ -28,7 +28,7 @@
             <ui-text-field hintText="评论内容"/>
             <ui-raised-button label="评论" class="demo-raised-button" primary/>
         </div>
-    </ui-page>
+    </my-page>
 </template>
 
 <script>
@@ -128,6 +128,8 @@
                                     })
                 } else {
                     this.article = localActicle.getById(id)
+                    localActicle.remove(this.article)
+                    this.$router.go(-1)
                 }
             }
         }

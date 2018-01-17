@@ -1,5 +1,5 @@
 <template>
-    <ui-page title="添加便签" :page="page" backable>
+    <my-page title="添加便签" :page="page" backable>
         <ui-content-block>
             <div>
                 <ui-text-field v-model="title" hintText="标题（可为空）"/>
@@ -8,7 +8,7 @@
                 <ui-text-field v-model="content" hintText="内容" multiLine :rows="10" :rowsMax="6"/>
             </div>
         </ui-content-block>
-    </ui-page>
+    </my-page>
 </template>
 
 <script>
@@ -60,7 +60,9 @@
                 } else {
                     localActicle.add({
                         title: title,
-                        content: this.content
+                        content: this.content,
+                        createTime: new Date().getTime(),
+                        updateTime: new Date().getTime()
                     })
                     this.$router.go(-1)
                 }
