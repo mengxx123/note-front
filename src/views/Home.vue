@@ -30,6 +30,10 @@
                 </div>
             </div>
         </div>
+
+        <a href="javascript:;" v-if="$store.state.user">{{ $store.state.user.name }}</a>
+        <a href="javascript:;" v-if="!$store.state.user" @click="login">点击登陆</a>
+        
         <div class="empty-box" v-if="!articles.length">
             <p>你还没有添加任何便签</p>
             <p>点击右下角的 + 添加快速添加便签</p>
@@ -42,6 +46,7 @@
 <script>
     import localActicle from '@/util/article'
     import {format} from '@/util/time'
+    import oss from '@/util/oss'
 
     export default {
         data () {
@@ -79,26 +84,39 @@
                 }
 
                 this.layout = this.$storage.get('layout', 'grid')
-                if (this.$storage.get('accessToken')) {
+                console.log('this.$cookie.get(accessToken)', this.$cookie.get('accessToken'))
+                if (this.$cookie.get('accessToken')) {
                     let user = this.$storage.get('user')
                     if (!user) {
-                        this.$storage.set('accessToken', null)
-                        this.$route.go(0)
+                         this.$http.get(`/me`)
+                            .then(response => {
+                                console.log('个人信息', response.data)
+                                 this.getArticles()
+                            },
+                            response => {
+                                console.log(response)
+                            })
+                        // this.$storage.set('accessToken', null)
+                        // this.$route.go(0)
                         return
                     }
-                    this.$http.get(`/users/${user.id}/articles`)
-                        .then(response => {
-                            this.articles = response.data
-                        },
-                        response => {
-                            console.log(response)
-                        })
+                    this.getArticles()
                 } else {
                     this.articles = localActicle.getAll()
                     this.articles = this.articles.sort((a, b) => {
                         return b.updateTime - a.updateTime
                     })
                 }
+            },
+            getArticles() {
+                let user = this.$store.state.user
+                this.$http.get(`/users/${user.id}/articles`)
+                    .then(response => {
+                        this.articles = response.data
+                    },
+                    response => {
+                        console.log(response)
+                    })
             },
             changeLayout() {
                 this.layout = this.layout === 'list' ? 'grid' : 'list'
@@ -158,6 +176,9 @@
                 } else {
                     return format(date, 'yyyy-MM-dd hh:mm')
                 }
+            },
+            login() {
+                location.href = oss.getOauthUrl()
             }
         },
         watch: {

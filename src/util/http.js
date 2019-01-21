@@ -1,8 +1,9 @@
 import axios from 'axios'
 import {apiDomain} from '@/config'
-import storage from '@/util/storage'
+// import storage from '@/util/storage'
+import cookie from './cookie'
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 const instance = axios.create({
     baseURL: apiDomain
@@ -11,7 +12,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
         config => {
             console.log('请求')
-            let token = storage.get('accessToken')
+            let token = cookie.get('accessToken')
             if (token) {
                 console.log('有' + token)
                 config.headers.Authorization = token

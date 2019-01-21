@@ -6,6 +6,28 @@
 
 <script>
     export default {
-        name: 'app'
+        name: 'app',
+        data: {},
+        beforeMount() {
+            this.init()
+        },
+        mounted() {
+        },
+        methods: {
+            init() {
+                this.login()
+            },
+            login() {
+                this.$http.get('/me')
+                    .then(response => {
+                        let data = response.data
+                        console.log(data)
+                        this.$store.state.user = data
+                    },
+                    response => {
+                        console.log(response)
+                    })
+            }
+        }
     }
 </script>

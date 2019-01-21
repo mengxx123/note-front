@@ -61,7 +61,7 @@
         methods: {
             init() {
                 let id = this.$route.params.id
-                if (this.$storage.get('accessToken')) {
+                if (this.$cookie.get('accessToken')) {
                     // 文章信息
                     this.$http.get(`/articles/${id}`)
                             .then(response => {
@@ -117,7 +117,7 @@
             },
             remove() {
                 let id = this.$route.params.id
-                if (this.$storage.get('accessToken')) {
+                if (this.$cookie.get('accessToken')) {
                     this.$http.delete(`/articles/${id}`)
                             .then(
                                     response => {

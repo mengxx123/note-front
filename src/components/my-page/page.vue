@@ -7,9 +7,10 @@
             <div class="header">
                 <ui-avatar class="avatar" :size="48" src="/static/img/avatar.jpg"
                            @click="login"/>
-                <div class="username" v-if="!user">游客</div>
-                <div class="username" v-if="user" @click="loginout">{{ user.name }}</div>
+                <div class="username" v-if="!this.$store.state.user">游客</div>
+                <div class="username" v-if="this.$store.state.user" @click="loginout" title="点击退出登陆">{{ this.$store.state.user.name }}</div>
             </div>
+            <div v-if="$store.state.show">呵呵哒</div>
             <ui-divider />
             <ui-list @itemClick="toggle()">
                 <ui-list-item title="全部" to="/">
@@ -65,13 +66,14 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import oss from '@/util/oss'
 
     export default {
         data() {
             return {
                 // 侧栏
-                user: null,
+                user: this.$store.state.user,
                 categories: [],
                 dialog: false,
                 categoryName: ''
@@ -120,21 +122,30 @@
                 this.$refs.page.hideDrawerIfMobile()
             },
             init() {
-                this.user = this.$storage.get('user')
                 this.categories = this.$storage.get('categories')
                 if (!this.categories) {
                     this.categories = []
                 }
+                console.log('获取cookie')
+                console.log(this.$cookie.get('accessToken'))
             },
             login() {
                 location.href = oss.getOauthUrl()
             },
             loginout() {
                 // TODO 请求
-                this.$storage.set('accessToken', null)
-                this.$storage.set('user', null)
-                this.user = null
-                this.$router.push('/')
+                // this.$storage.set('accessToken', null)
+                // this.$storage.set('user', null)
+
+                this.$store.state.user = null
+                Cookies.remove('accessToken', {
+                    domain: 'yunser.com',
+                    path: '/'
+                })
+                // this.user = null
+                // this.$router.push('/')
+                // this.$router.push('/')
+                location.reload()
             },
             save() {
                 this.dialog = false
@@ -152,6 +163,7 @@
             close () {
                 this.dialog = false
             }
+
         }
     }
 </script>
