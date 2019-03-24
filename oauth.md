@@ -4,6 +4,7 @@
 * https://record.yunser.com
 * https://note.yunser.com
 * https://password.yunser.com
+* https://health.yunser.com
 
 ## Vue 接入用户登录系统
 
