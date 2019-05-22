@@ -5,6 +5,9 @@
 * https://note.yunser.com
 * https://password.yunser.com
 * https://health.yunser.com
+* https://site.yunser.com
+* https://todo.yunser.com
+* https://clipboard.yunser.com
 
 ## Vue 接入用户登录系统
 
@@ -26,18 +29,13 @@ cnpm install vuex --save
 
 
 
-const OauthCallback = resolve => require(['@/views/oauth/Callback'], resolve)
-{
-      path: '/oauth/callback',
-      component: OauthCallback
-},
-
 
 
 
 
 main.js
 import cookie from '@/util/cookie'
+import store from '@/store/index'
 
 Vue.prototype.$cookie = cookie
 
@@ -73,4 +71,5 @@ login() {
 
 app.vue
 <router-view :key="$route.fullPath + $store.state.loginState"/>
+
 ```

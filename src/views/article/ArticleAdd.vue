@@ -1,13 +1,15 @@
 <template>
     <my-page title="添加便签" :page="page" backable>
-        <ui-content-block>
-            <div>
-                <ui-text-field v-model="title" hintText="标题（可为空）"/>
-            </div>
-            <div>
-                <ui-text-field v-model="content" hintText="内容" multiLine :rows="10" :rowsMax="6"/>
-            </div>
-        </ui-content-block>
+        <div class="common-container container">
+            <ui-content-block>
+                <div>
+                    <ui-text-field v-model="title" hintText="标题（可为空）"/>
+                </div>
+                <div>
+                    <ui-text-field v-model="content" hintText="内容" multiLine :rows="10" :rowsMax="6"/>
+                </div>
+            </ui-content-block>
+        </div>
     </my-page>
 </template>
 

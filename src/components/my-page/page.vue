@@ -16,6 +16,8 @@
                 <ui-list-item title="全部" to="/">
                     <ui-icon value="description" slot="left"/>
                 </ui-list-item>
+
+                
                 <!--<ui-list-item title="全部" to="/">-->
                 <!--<ui-icon value="tag" slot="left"/>-->
                 <!--</ui-list-item>-->
@@ -23,16 +25,24 @@
                 <!--<ui-icon value="add" slot="left"/>-->
                 <!--</ui-list-item>-->
             </ui-list>
+            
+            <ui-divider />
+            
+            <ui-list>
+                <ui-list-item title="关于/帮助" href="https://project.yunser.com/products/de7ffba0547f11e9a8589fb76d1293af" target="_blank">
+                    <ui-icon value="info" slot="left"/>
+                </ui-list-item>
+                <ui-list-item title="设置" to="/settings">
+                    <ui-icon value="settings" slot="left"/>
+                </ui-list-item>
+            </ui-list>
             <ui-list v-if="categories.length">
                 <mu-sub-header>清单</mu-sub-header>
                 <ui-list-item :title="category.name" :to="`/categories/${category.id}`"
                               v-for="category in categories" :key="category.id"></ui-list-item>
             </ui-list>
-            <ui-list class="ui-position-bottom">
-                <ui-list-item title="设置" to="/settings">
-                    <ui-icon value="settings" slot="left"/>
-                </ui-list-item>
-            </ui-list>
+            
+
             <ui-dialog :dialogClass="['list-dialog']" :open="dialog" title="新建清单" @close="close">
                 <ui-text-field v-model="categoryName" hintText="清单名称"/>
                 <ui-flat-button slot="actions" @click="close" primary label="取消"/>

@@ -1,32 +1,34 @@
 <template>
     <my-page title="文章详情" :page="page" backable>
-        <ui-content-block>
-            <div v-if="article">
-                <div>
-                    <ui-text-field v-model="article.title" hintText="标题（可为空）" full-width/>
+        <div class="common-container container">
+            <ui-content-block>
+                <div v-if="article">
+                    <div>
+                        <ui-text-field v-model="article.title" hintText="标题（可为空）" full-width/>
+                    </div>
+                    <div>
+                        <ui-text-field v-model="article.content" hintText="内容" multiLine :rows="10" :rowsMax="6" full-width/>
+                    </div>
                 </div>
-                <div>
-                    <ui-text-field v-model="article.content" hintText="内容" multiLine :rows="10" :rowsMax="6" full-width/>
-                </div>
+            </ui-content-block>
+            <ui-list v-if="false">
+                <ui-sub-header>评论</ui-sub-header>
+                <ui-list-item title="小明" v-for="comment in comments" :key="comment.id">
+                    <ui-avatar src="/images/avatar1.jpg" slot="leftAvatar"/>
+                    <span slot="describe" v-html="comment.content"></span>
+                    <div>{{ comment.updateTime }}</div>
+                    <ui-icon-menu slot="right" icon="more_vert" tooltip="操作">
+                        <ui-menu-item title="回复" />
+                        <ui-menu-item title="标记" />
+                        <ui-menu-item title="删除" />
+                    </ui-icon-menu>
+                </ui-list-item>
+                <ui-divider inset/>
+            </ui-list>
+            <div v-if="false">
+                <ui-text-field hintText="评论内容"/>
+                <ui-raised-button label="评论" class="demo-raised-button" primary/>
             </div>
-        </ui-content-block>
-        <ui-list v-if="false">
-            <ui-sub-header>评论</ui-sub-header>
-            <ui-list-item title="小明" v-for="comment in comments" :key="comment.id">
-                <ui-avatar src="/images/avatar1.jpg" slot="leftAvatar"/>
-                <span slot="describe" v-html="comment.content"></span>
-                <div>{{ comment.updateTime }}</div>
-                <ui-icon-menu slot="right" icon="more_vert" tooltip="操作">
-                    <ui-menu-item title="回复" />
-                    <ui-menu-item title="标记" />
-                    <ui-menu-item title="删除" />
-                </ui-icon-menu>
-            </ui-list-item>
-            <ui-divider inset/>
-        </ui-list>
-        <div v-if="false">
-            <ui-text-field hintText="评论内容"/>
-            <ui-raised-button label="评论" class="demo-raised-button" primary/>
         </div>
     </my-page>
 </template>
@@ -41,14 +43,14 @@
                     menu: [
                         {
                             type: 'icon',
-                            icon: 'delete',
-                            click: this.remove
+                            icon: 'check',
+                            click: this.update
                         },
                         {
                             type: 'icon',
-                            icon: 'check',
-                            click: this.update
-                        }
+                            icon: 'delete',
+                            click: this.remove
+                        },
                     ]
                 },
                 article: null,

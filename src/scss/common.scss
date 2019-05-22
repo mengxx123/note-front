@@ -1,6 +1,12 @@
 body {
     background-color: #f9f9f9;
 }
+.common-container {
+    // width: 800px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px 16px 80px 16px;
+  }
 // TODO 注意
 .ui-article {
     h1 {

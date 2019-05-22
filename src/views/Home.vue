@@ -1,42 +1,45 @@
 <template>
-    <my-page name="todo" :page="page" title="云设便签" :containerPadding="layout === 'grid'">
-        <ui-list v-if="articles.length && layout === 'list'">
-            <li v-for="article in articles"
-                :key="article.id">
-                <ui-list-item :title="article.title" :to="`/articles/${article.id}`">
-                    <ui-icon slot="left" value="grade"/>
-                    <span slot="describe" v-html="article.content"></span>
-                    <!--<ui-icon-menu slot="right" icon="more_vert" tooltip="操作">-->
-                    <!--<ui-menu-item title="回复" />-->
-                    <!--<ui-menu-item title="标记" />-->
-                    <!--<ui-menu-item title="删除" />-->
-                    <!--</ui-icon-menu>-->
-                </ui-list-item>
-                <ui-divider inset/>
-            </li>
+    <my-page name="todo" :page="page" title="便签" :containerPadding="layout === 'grid'">
+        <div class="common-container container">
+            <ui-list v-if="articles.length && layout === 'list'">
+                <li v-for="article in articles"
+                    :key="article.id">
+                    <ui-list-item :title="article.title" :to="`/articles/${article.id}`">
+                        <ui-icon slot="left" value="grade"/>
+                        <span slot="describe" v-html="article.content"></span>
+                        <!--<ui-icon-menu slot="right" icon="more_vert" tooltip="操作">-->
+                        <!--<ui-menu-item title="回复" />-->
+                        <!--<ui-menu-item title="标记" />-->
+                        <!--<ui-menu-item title="删除" />-->
+                        <!--</ui-icon-menu>-->
+                    </ui-list-item>
+                    <ui-divider inset/>
+                </li>
 
-        </ui-list>
+            </ui-list>
 
-        <div class="article-grid my-row" v-if="articles.length && layout === 'grid'" gutter>
-            <div class="my-col" v-for="article in articles" :key="article.id">
-                <div class="my-col-content">
-                    <ui-paper class="item" :title="article.title" :to="`/articles/${article.id}`">
-                        <router-link class="link ui-match-parent" :to="`/articles/${article.id}`">
-                            <h3 class="title">{{ article.title }}</h3>
-                            <div class="content">{{ article.content }}</div>
-                            <div class="time">{{ simpleTime(article.updateTime) }}</div>
-                        </router-link>
-                    </ui-paper>
+            <div class="article-grid my-row" v-if="articles.length && layout === 'grid'" gutter>
+                <div class="my-col" v-for="article in articles" :key="article.id">
+                    <div class="my-col-content">
+                        <ui-paper class="item" :title="article.title" :to="`/articles/${article.id}`">
+                            <router-link class="link ui-match-parent" :to="`/articles/${article.id}`">
+                                <h3 class="title">{{ article.title }}</h3>
+                                <div class="content">{{ article.content }}</div>
+                                <div class="time">{{ simpleTime(article.updateTime) }}</div>
+                            </router-link>
+                        </ui-paper>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <a href="javascript:;" v-if="$store.state.user">{{ $store.state.user.name }}</a>
-        <a href="javascript:;" v-if="!$store.state.user" @click="login">点击登陆</a>
-        
-        <div class="empty-box" v-if="!articles.length">
-            <p>你还没有添加任何便签</p>
-            <p>点击右下角的 + 添加快速添加便签</p>
+            <!-- <a href="javascript:;" v-if="$store.state.user">{{ $store.state.user.name }}</a> -->
+            <a href="javascript:;" v-if="!$store.state.user" @click="login">点击登陆</a>
+            
+            <div class="empty-box" v-if="!articles.length">
+                <p>你还没有添加任何便签</p>
+                <p>点击右下角的 + 添加快速添加便签</p>
+            </div>
+
         </div>
         <ui-float-button class="ui-float-btn" icon="add" to="/articles/add"/>
         <div class="tip" v-if="tipVisible">{{ tip }}</div>
