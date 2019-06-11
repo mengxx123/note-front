@@ -33,7 +33,12 @@
             }
         },
         mounted() {
-            console.log(new Date().getTime())
+            let data = this.$storage.get('data')
+            console.log('data', data)
+            if (data) {
+                this.content = data
+                this.$storage.set('data', '')
+            }
         },
         methods: {
             add() {
@@ -46,7 +51,7 @@
                     title = this.content.substring(0, 10)
                 }
                 if (user) {
-                    this.$http.post(`/articles`, {
+                    this.$http.post(`/note/articles`, {
                         title: title,
                         content: this.content,
                         user: {

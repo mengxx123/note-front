@@ -118,6 +118,10 @@
                 }
             },
             remove() {
+                let ret = confirm(`确认删除?`)
+                if (!ret) {
+                    return
+                }
                 let id = this.$route.params.id
                 if (this.$cookie.get('accessToken')) {
                     this.$http.delete(`/articles/${id}`)

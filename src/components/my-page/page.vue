@@ -5,8 +5,9 @@
                 :backable="backable">
         <div slot="drawer">
             <div class="header">
-                <ui-avatar class="avatar" :size="48" src="/static/img/avatar.jpg"
-                           @click="login"/>
+                <img class="logo" src="https://icons.yunser.com/icons/note.svg">
+                <!-- <ui-avatar class="avatar" :size="48" src="https://icons.yunser.com/icons/code.svg"
+                           @click="login"/> -->
                 <div class="username" v-if="!this.$store.state.user">游客</div>
                 <div class="username" v-if="this.$store.state.user" @click="loginout" title="点击退出登陆">{{ this.$store.state.user.name }}</div>
             </div>
@@ -209,14 +210,23 @@
     // 侧栏
     .header {
         /*height: 100px;*/
-        .avatar {
-            display: block;
-            margin: 32px auto 8px auto;
-        }
+        // .avatar {
+        //     display: block;
+        //     margin: 32px auto 8px auto;
+        // }
         .username {
-            margin-bottom: 32px;
+            // margin-bottom: 32px;
             text-align: center;
         }
+    }
+    .header {
+        padding: 40px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .logo {
+        display: block;
+        width: 80px;
+        margin: 0 auto;
     }
     .page-nav {
         position: absolute;

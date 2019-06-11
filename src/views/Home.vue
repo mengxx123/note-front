@@ -41,12 +41,13 @@
             </div>
 
         </div>
-        <ui-float-button class="ui-float-btn" icon="add" to="/articles/add"/>
+        <ui-float-button class="ui-float-btn" secondary icon="add" to="/articles/add"/>
         <div class="tip" v-if="tipVisible">{{ tip }}</div>
     </my-page>
 </template>
 
 <script>
+    /* eslint-disable */
     import localActicle from '@/util/article'
     import {format} from '@/util/time'
     import oss from '@/util/oss'
@@ -63,9 +64,16 @@
                     menu: [
                         {
                             type: 'icon',
-                            icon: this.layout === 'grid' ? 'list' : 'apps',
+                            icon: this.layout === 'grid' ? 'list' : 'list',
                             title: '切换布局',
                             click: this.changeLayout
+                        },
+                        {
+                            type: 'icon',
+                            icon: 'apps',
+                            href: 'https://app.yunser.com?utm_source=note',
+                            target: '_blank',
+                            title: '应用'
                         }
                     ]
                 },
@@ -75,6 +83,18 @@
         },
         mounted() {
             this.init()
+            let { data } = this.$route.query
+            if (data) {
+                this.$storage.set('data', data)
+                this.$router.replace('/')
+                // this.$router.push(`/articles/add?data=${encodeURIComponent(data)}`)
+            } else {
+                data = this.$storage.get('data')
+                if (data) {
+                    this.$router.push(`/articles/add`)
+                }
+            }
+
         },
         methods: {
             // 初始化
@@ -113,7 +133,10 @@
             },
             getArticles() {
                 let user = this.$store.state.user
-                this.$http.get(`/users/${user.id}/articles`)
+                if (!this.$store.state.user) {
+                    return
+                }
+                this.$http.get(`/note/articles`)
                     .then(response => {
                         this.articles = response.data
                     },
