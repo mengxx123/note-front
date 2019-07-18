@@ -27,8 +27,11 @@ index.html
 cnpm install vuex --save
 
 
-
-
+const OauthCallback = resolve => require(['@/views/oauth/Callback'], resolve)
+{
+        path: '/oauth/callback',
+        component: OauthCallback
+    },
 
 
 
